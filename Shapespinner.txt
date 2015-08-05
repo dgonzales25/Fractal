@@ -1,0 +1,67 @@
+import pygame
+import sys
+import math
+
+# Define some colors
+black  = (   0,   0,   0)
+white  = ( 255, 255, 255)
+red    = ( 255,   0,   0)
+green   = (   0, 255,   0)
+blue = (   0,   0, 255)
+size = 720
+ttheta = 0
+ctheta = 0
+stheta = 0
+pygame.init()
+screen = pygame.display.set_mode((size, size))
+screen.fill(white)
+
+def triangle():
+    pointlist = [(size/2,size/2),
+                 (size/2+size/2*math.sin(ttheta),size/2+size/2*math.cos(ttheta)),
+                 (size/2+size/2*math.sin(ttheta+math.pi/3),size/2+size/2*math.cos(ttheta+math.pi/3))]
+    pygame.draw.polygon(screen, red, pointlist, 0)
+
+    pointlist = [(size/2,size/2),
+                 (size/2+size/2*math.sin(ttheta+math.pi),size/2+size/2*math.cos(ttheta+math.pi)),
+                 (size/2+size/2*math.sin(ttheta+math.pi*4/3),size/2+size/2*math.cos(ttheta+math.pi*4/3))]
+    pygame.draw.polygon(screen, red, pointlist, 0)
+
+def circle(r):
+    pygame.draw.circle(screen, green, (math.floor(size/2+r*math.sin(ctheta)),
+                                       math.floor(size/2+r*math.cos(ctheta))), int(size/4), 0)
+    
+    pygame.draw.circle(screen, green, (math.floor(size/2+r*math.sin(ctheta+math.pi)),
+                                       math.floor(size/2+r*math.cos(ctheta+math.pi))), int(size/4), 0)
+
+def square():
+    edge = size/2/math.sqrt(2)
+    pointlist = [(size/2,size/2),
+                 (size/2+edge*math.sin(stheta+math.pi/4),size/2+edge*math.cos(stheta+math.pi/4)),
+                 (size/2+size/2*math.sin(stheta),size/2+size/2*math.cos(stheta)),
+                 (size/2+edge*math.sin(stheta-math.pi/4),size/2+edge*math.cos(stheta-math.pi/4))]                
+    pygame.draw.polygon(screen, blue, pointlist, 0)
+
+    pointlist = [(size/2,size/2),
+                 (size/2+edge*math.sin(stheta+math.pi*5/4),size/2+edge*math.cos(stheta+math.pi*5/4)),
+                 (size/2+size/2*math.sin(stheta+math.pi),size/2+size/2*math.cos(stheta+math.pi)),
+                 (size/2+edge*math.sin(stheta-math.pi*5/4),size/2+edge*math.cos(stheta-math.pi*5/4))]                
+    pygame.draw.polygon(screen, blue, pointlist, 0)
+    
+    
+pygame.display.set_caption("Shapespinner")
+pygame.display.update()
+
+while 1:
+    ttheta += .0005
+    ctheta -= .001
+    stheta += .0015
+    screen = pygame.display.set_mode((size, size))
+    triangle()
+    circle(size/4)
+    square()
+    pygame.display.update()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            pygame.quit()
+            sys.exit()
