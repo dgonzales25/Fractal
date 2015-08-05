@@ -1,0 +1,41 @@
+import pygame
+import sys
+
+
+# Define some colors
+black = (   0,   0,   0)
+white = ( 255, 255, 255)
+size = 512
+pygame.init()
+screen = pygame.display.set_mode((size, size))
+screen.fill(white)
+
+# Draws the bottom right half of the fractal
+def drawRightHalf(x,y,size):
+        if size > 1:
+            pointlist = [(x,y), (x-size,y-size) , (x,y-size)]
+            pygame.draw.polygon(screen, black, pointlist, 0)
+            pygame.display.update()
+            drawRightHalf(x - size,y,size/2)
+            drawRightHalf(x, y - size,size/2)
+
+# Draws the top left half of the fractal
+def drawLeftHalf(x,y,size):
+        if size > 1:
+            pointlist = [(x,y), (x+size,y+size) , (x,y+size)]
+            pygame.draw.polygon(screen, black, pointlist, 0)
+            pygame.display.update()
+            drawLeftHalf(x + size,y,size/2)
+            drawLeftHalf(x, y + size,size/2)
+
+            
+pygame.display.set_caption("Fractal")
+drawRightHalf(size,size,size/2)
+drawLeftHalf(0,0,size/2)
+
+while 1:    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            pygame.quit()
+            sys.exit()
+
